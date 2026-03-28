@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 async function getProducts() {
   try {
     const res = await fetch("https://fakestoreapi.com/products", {
-      cache: "no-store", // SSR
+      next: { revalidate: 60 }, // 🔥 FIX
     });
 
     if (!res.ok) {
@@ -15,7 +15,7 @@ async function getProducts() {
     return await res.json();
   } catch (error) {
     console.error("API ERROR:", error);
-    return []; // prevent crash
+    return [];
   }
 }
 
@@ -36,7 +36,7 @@ export default async function Home() {
             ))
           ) : (
             <p style={{ padding: "20px" }}>
-              Failed to load products. Please try again later.
+              Products are temporarily unavailable.
             </p>
           )}
         </div>
